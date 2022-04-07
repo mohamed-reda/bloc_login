@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_login/logic/blocs/auth/bloc/auth_bloc.dart';
 import 'package:bloc_login/logic/blocs/auth/bloc/auth_state.dart';
 import 'package:bloc_login/presentation/router/app_routes.dart';
+import './main.dart' as app;
 
 import 'data/repositories/authentication_repository/authentication_repository.dart';
 

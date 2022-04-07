@@ -48,6 +48,7 @@ dependencies:
   json_annotation: ^4.4.0
   getwidget: ^2.0.4
   line_awesome_flutter: ^2.0.0
+  integration_test:
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../data/dataproviders/http.provider.dart';
+import '../../../logic/helpers/validator.dart';
+
 class RegisterPublic extends StatefulWidget {
   const RegisterPublic({Key key}) : super(key: key);
 
@@ -62,6 +65,7 @@ class _RegisterPublicState extends State<RegisterPublic> {
                     )),
                 const Text(
                   'Register',
+                  key: Key('Register'),
                   style: TextStyle(
                       color: Colors.white, fontSize: 25, fontFamily: 'UniNeue'),
                 ),
@@ -78,9 +82,10 @@ class _RegisterPublicState extends State<RegisterPublic> {
                               padding:
                                   const EdgeInsets.only(left: 20.0, right: 40),
                               child: TextFormField(
+                                key: Key('Email'),
                                 style: const TextStyle(
                                     color: Colors.white, fontFamily: 'UniNeue'),
-                                validator: (val) {},
+                                validator: (val) => validateEmail(val),
                                 controller: emailController,
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: const InputDecoration(
@@ -110,9 +115,10 @@ class _RegisterPublicState extends State<RegisterPublic> {
                               padding: const EdgeInsets.only(
                                   top: 40, left: 20.0, right: 40),
                               child: TextFormField(
+                                key: Key('Password'),
                                 style: const TextStyle(
                                     color: Colors.white, fontFamily: 'UniNeue'),
-                                validator: (val) {},
+                                validator: (val) => validatePassword(val),
                                 obscureText: obscureText,
                                 keyboardType: TextInputType.text,
                                 controller: pwdController,
@@ -153,12 +159,16 @@ class _RegisterPublicState extends State<RegisterPublic> {
                               padding: const EdgeInsets.only(
                                   top: 40, left: 20.0, right: 40),
                               child: TextFormField(
+                                key: Key('Confirm Password'),
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontFamily: 'UniNeue',
                                     fontSize: 18),
                                 keyboardType: TextInputType.text,
-                                validator: (val) {},
+                                validator: (val) {
+                                  return validateConfirmPassword(
+                                      pwdController.value.text, val);
+                                },
                                 obscureText: obscureText1,
                                 controller: cpwdController,
                                 decoration: InputDecoration(
@@ -198,25 +208,28 @@ class _RegisterPublicState extends State<RegisterPublic> {
                               padding: const EdgeInsets.only(
                                   top: 50, left: 40.0, right: 40),
                               child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize:
-                                        Size(width * 0.65, height * 0.12),
-                                    side: const BorderSide(
-                                        color: Colors.white, width: 1),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30)),
-                                  ),
-                                  onPressed: () {
-                                    //submit
-                                  },
-                                  child: const Text(
-                                    'Submit',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontFamily: 'UniNeue'),
-                                  )),
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize:
+                                      Size(width * 0.65, height * 0.12),
+                                  side: const BorderSide(
+                                      color: Colors.white, width: 1),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30)),
+                                ),
+                                onPressed: () {
+                                  if (_reg1Form.currentState.validate()) {
+                                    register();
+                                  }
+                                },
+                                child: const Text(
+                                  'Submit',
+                                  key: Key('Submit'),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontFamily: 'UniNeue'),
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 40,
@@ -415,5 +428,22 @@ class _RegisterPublicState extends State<RegisterPublic> {
     setState(() {
       obscureText1 = !obscureText1;
     });
+  }
+
+  Future<void> register() async {
+    // var v = await HttpProvider().reg(
+    //     username: emailController.value.text,
+    //     password: pwdController.value.text,
+    //     cpassword: cpwdController.value.text);
+
+    final snackBar = SnackBar(
+      content: Text(
+          'You entered : \n username: ${emailController.value.text}\n password: ${pwdController.value.text}, \n cpassword: ${cpwdController.value.text}'),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    print('----------------------------------------------------------');
+    print(
+        'You entered : \n username: ${emailController.value.text}\n password: ${pwdController.value.text}, \n cpassword: ${cpwdController.value.text}');
+    print('----------------------------------------------------------');
   }
 }
